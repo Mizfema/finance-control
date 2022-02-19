@@ -17,6 +17,7 @@ export function NewTransactionModal( {isOpen, onRequestClose}:propsNewTransactio
             onRequestClose={onRequestClose}
             overlayClassName="react-modal-overlay"
             className="react-modal-content"
+          
             
         >
             <Container>
