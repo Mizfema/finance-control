@@ -4,7 +4,8 @@ import { Container, RadioBox, TransactionTypeContainer } from './style';
 import closeImg from '../../assets/close.svg';
 import incomeImg from '../../assets/income.svg';
 import outcomeImg from '../../assets/outcome.svg';
-import { useState } from 'react';
+import { FormEvent, useState } from 'react';
+import { api } from '../../services/api';
 
 
 
@@ -16,7 +17,25 @@ interface propsNewTransactionModal {
 }
 
 export function NewTransactionModal( {isOpen, onRequestClose}:propsNewTransactionModal) {
-    const [type, setType] = useState('deposit')
+    const [type, setType] = useState('deposit');
+    const [title, setTitle] = useState('');
+    const [category, setCategory] = useState('');
+    const [amount, setAmount] = useState(0);
+
+
+    function handleCreateNewTransaction(event: FormEvent) {
+        event.preventDefault();
+
+       const data = {
+        title,
+        amount,
+        type,
+        category
+       }
+
+       api.post('/transactions', data)
+    }   
+    
    
     return (
         <Modal 
@@ -27,7 +46,7 @@ export function NewTransactionModal( {isOpen, onRequestClose}:propsNewTransactio
           
             
         >
-            <Container>
+            <Container onSubmit={handleCreateNewTransaction} >
 
                 <button 
                     type='button'
@@ -40,12 +59,16 @@ export function NewTransactionModal( {isOpen, onRequestClose}:propsNewTransactio
                 <h2>Cadastrar Transação</h2>
 
                 <input 
-                    placeholder="Titulo" 
+                    placeholder="Titulo"
+                    value={title} 
+                    onChange={event => setTitle(event.target.value)}
                 />
 
                 <input 
                     placeholder="Valor"
                     type="number"
+                    value={amount} 
+                    onChange={event => setAmount(Number(event.target.value))}
                 />
 
                 <TransactionTypeContainer>
@@ -72,6 +95,8 @@ export function NewTransactionModal( {isOpen, onRequestClose}:propsNewTransactio
 
                 <input 
                     placeholder="categoria"
+                    value={category} 
+                    onChange={event => setCategory(event.target.value)}
                     
                  />
                  <button type="submit">
