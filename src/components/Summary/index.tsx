@@ -1,16 +1,17 @@
 
 
-import { useContext } from "react"
+
 import imgIncome from "../../assets/income.svg"
 import imgOutcome from "../../assets/outcome.svg"
 import imgTotal from "../../assets/total.svg"
-import { TransactionContext } from "../../TransactionContext"
+import { useTransaction } from "../../Hooks/useTransaction"
+
 import { Container, Content } from "./style"
 
 
 export function Summary() {
 
-    const {transactions} = useContext(TransactionContext)
+    const {transactions} = useTransaction()
   
     const summary = transactions.reduce((acc, transaction) => {
         if (transaction.type==='deposit') {
@@ -37,7 +38,13 @@ export function Summary() {
                     <span>Entradas</span>
                     <img src={imgIncome} alt="Entradas" />
                 </header>
-                <strong>{summary.deposits} </strong>
+                <strong>
+                    {new Intl.NumberFormat('pt-MZ', {
+                                style: 'currency',
+                                currency: 'MZN'
+                    }).format(summary.deposits)}
+                    
+                </strong>
             </Content>
 
             <Content>
@@ -45,7 +52,13 @@ export function Summary() {
                     <span>Saidas</span>
                     <img src={imgOutcome} alt="Saidas" />
                 </header>
-                <strong>{summary.withdraw}</strong>
+                <strong>
+                    {new Intl.NumberFormat('pt-MZ', {
+                                style: 'currency',
+                                currency: 'MZN'
+                    }).format(summary.withdraw)}
+                   
+                </strong>
             </Content>
 
             <Content className="total-amount">
@@ -53,7 +66,13 @@ export function Summary() {
                     <span>Total</span>
                     <img src={imgTotal} alt="Total" />
                 </header>
-                <strong>{summary.total}</strong>
+                <strong>
+                    {new Intl.NumberFormat('pt-MZ', {
+                                style: 'currency',
+                                currency: 'MZN'
+                    }).format(summary.total)}
+                    
+                </strong>
             </Content>
         </Container>
     )
